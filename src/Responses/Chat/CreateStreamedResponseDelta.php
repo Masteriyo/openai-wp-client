@@ -6,21 +6,31 @@ namespace OpenAI\Responses\Chat;
 
 final class CreateStreamedResponseDelta
 {
-    private function __construct(
-        public readonly ?string $role,
-        public readonly ?string $content,
-    ) {
+    /**
+     * @readonly
+     * @var string|null
+     */
+    public $role;
+    /**
+     * @readonly
+     * @var string|null
+     */
+    public $content;
+    /**
+     * @param string|null $role
+     * @param string|null $content
+     */
+    private function __construct($role, $content)
+    {
+        $this->role = $role;
+        $this->content = $content;
     }
-
     /**
      * @param  array{role?: string, content?: string}  $attributes
      */
     public static function from(array $attributes): self
     {
-        return new self(
-            $attributes['role'] ?? null,
-            $attributes['content'] ?? null,
-        );
+        return new self($attributes['role'] ?? null, $attributes['content'] ?? null);
     }
 
     /**

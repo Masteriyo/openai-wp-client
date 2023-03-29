@@ -6,23 +6,36 @@ namespace OpenAI\Responses\Chat;
 
 final class CreateResponseUsage
 {
-    private function __construct(
-        public readonly int $promptTokens,
-        public readonly ?int $completionTokens,
-        public readonly int $totalTokens,
-    ) {
+    /**
+     * @readonly
+     * @var int
+     */
+    public $promptTokens;
+    /**
+     * @readonly
+     * @var int|null
+     */
+    public $completionTokens;
+    /**
+     * @readonly
+     * @var int
+     */
+    public $totalTokens;
+    /**
+     * @param int|null $completionTokens
+     */
+    private function __construct(int $promptTokens, $completionTokens, int $totalTokens)
+    {
+        $this->promptTokens = $promptTokens;
+        $this->completionTokens = $completionTokens;
+        $this->totalTokens = $totalTokens;
     }
-
     /**
      * @param  array{prompt_tokens: int, completion_tokens: int|null, total_tokens: int}  $attributes
      */
     public static function from(array $attributes): self
     {
-        return new self(
-            $attributes['prompt_tokens'],
-            $attributes['completion_tokens'] ?? null,
-            $attributes['total_tokens'],
-        );
+        return new self($attributes['prompt_tokens'], $attributes['completion_tokens'] ?? null, $attributes['total_tokens']);
     }
 
     /**

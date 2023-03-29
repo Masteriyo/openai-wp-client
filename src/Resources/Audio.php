@@ -19,7 +19,7 @@ final class Audio
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function transcribe(array $parameters): TranscriptionResponse
+    public function transcribe($parameters): TranscriptionResponse
     {
         $payload = Payload::upload('audio/transcriptions', $parameters);
 
@@ -36,7 +36,7 @@ final class Audio
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function translate(array $parameters): TranslationResponse
+    public function translate($parameters): TranslationResponse
     {
         $payload = Payload::upload('audio/translations', $parameters);
 

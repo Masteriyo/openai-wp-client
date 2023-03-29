@@ -21,20 +21,23 @@ interface Transporter
      * @return array<array-key, mixed>
      *
      * @throws ErrorException|UnserializableResponse|TransporterException
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestObject(Payload $payload): array|string;
+    public function requestObject($payload);
 
     /**
      * Sends a content request to a server.
      *
      * @throws ErrorException|TransporterException
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestContent(Payload $payload): string;
+    public function requestContent($payload): string;
 
     /**
      * Sends a stream request to a server.
      **
      * @throws ErrorException
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestStream(Payload $payload): ResponseInterface;
+    public function requestStream($payload): ResponseInterface;
 }

@@ -19,10 +19,16 @@ use OpenAI\Resources\Moderations;
 final class Client
 {
     /**
+     * @readonly
+     * @var \OpenAI\Contracts\Transporter
+     */
+    private $transporter;
+    /**
      * Creates a Client instance with the given API token.
      */
-    public function __construct(private readonly Transporter $transporter)
+    public function __construct(Transporter $transporter)
     {
+        $this->transporter = $transporter;
         // ..
     }
 

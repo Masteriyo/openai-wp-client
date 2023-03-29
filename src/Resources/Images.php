@@ -20,7 +20,7 @@ final class Images
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function create(array $parameters): CreateResponse
+    public function create($parameters): CreateResponse
     {
         $payload = Payload::create('images/generations', $parameters);
 
@@ -37,7 +37,7 @@ final class Images
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function edit(array $parameters): EditResponse
+    public function edit($parameters): EditResponse
     {
         $payload = Payload::upload('images/edits', $parameters);
 
@@ -54,7 +54,7 @@ final class Images
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function variation(array $parameters): VariationResponse
+    public function variation($parameters): VariationResponse
     {
         $payload = Payload::upload('images/variations', $parameters);
 

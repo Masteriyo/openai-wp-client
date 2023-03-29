@@ -21,7 +21,7 @@ final class Completions
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function create(array $parameters): CreateResponse
+    public function create($parameters): CreateResponse
     {
         $this->ensureNotStreamed($parameters);
 
@@ -41,7 +41,7 @@ final class Completions
      * @param  array<string, mixed>  $parameters
      * @return StreamResponse<CreateStreamedResponse>
      */
-    public function createStreamed(array $parameters): StreamResponse
+    public function createStreamed($parameters): StreamResponse
     {
         $parameters = $this->setStreamParameter($parameters);
 

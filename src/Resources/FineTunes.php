@@ -24,7 +24,7 @@ final class FineTunes
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function create(array $parameters): RetrieveResponse
+    public function create($parameters): RetrieveResponse
     {
         $payload = Payload::create('fine-tunes', $parameters);
 
@@ -53,8 +53,9 @@ final class FineTunes
      * Gets info about the fine-tune job.
      *
      * @see https://beta.openai.com/docs/api-reference/fine-tunes/list
+     * @param string $fineTuneId
      */
-    public function retrieve(string $fineTuneId): RetrieveResponse
+    public function retrieve($fineTuneId): RetrieveResponse
     {
         $payload = Payload::retrieve('fine-tunes', $fineTuneId);
 
@@ -68,8 +69,9 @@ final class FineTunes
      * Immediately cancel a fine-tune job.
      *
      * @see https://beta.openai.com/docs/api-reference/fine-tunes/cancel
+     * @param string $fineTuneId
      */
-    public function cancel(string $fineTuneId): RetrieveResponse
+    public function cancel($fineTuneId): RetrieveResponse
     {
         $payload = Payload::cancel('fine-tunes', $fineTuneId);
 
@@ -83,8 +85,9 @@ final class FineTunes
      * Get fine-grained status updates for a fine-tune job.
      *
      * @see https://beta.openai.com/docs/api-reference/fine-tunes/events
+     * @param string $fineTuneId
      */
-    public function listEvents(string $fineTuneId): ListEventsResponse
+    public function listEvents($fineTuneId): ListEventsResponse
     {
         $payload = Payload::retrieve('fine-tunes', $fineTuneId, '/events');
 
@@ -100,8 +103,9 @@ final class FineTunes
      * @see https://beta.openai.com/docs/api-reference/fine-tunes/events
      *
      * @return StreamResponse<RetrieveStreamedResponseEvent>
+     * @param string $fineTuneId
      */
-    public function listEventsStreamed(string $fineTuneId): StreamResponse
+    public function listEventsStreamed($fineTuneId): StreamResponse
     {
         $payload = Payload::retrieve('fine-tunes', $fineTuneId, '/events?stream=true');
 

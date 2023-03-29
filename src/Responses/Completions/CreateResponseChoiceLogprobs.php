@@ -7,30 +7,44 @@ namespace OpenAI\Responses\Completions;
 final class CreateResponseChoiceLogprobs
 {
     /**
+     * @var array<int, string>
+     * @readonly
+     */
+    public $tokens;
+    /**
+     * @var array<int, float>
+     * @readonly
+     */
+    public $tokenLogprobs;
+    /**
+     * @var array<int, string>|null
+     * @readonly
+     */
+    public $topLogprobs;
+    /**
+     * @var array<int, int>
+     * @readonly
+     */
+    public $textOffset;
+    /**
      * @param  array<int, string>  $tokens
      * @param  array<int, float>  $tokenLogprobs
      * @param  array<int, string>|null  $topLogprobs
      * @param  array<int, int>  $textOffset
      */
-    private function __construct(
-        public readonly array $tokens,
-        public readonly array $tokenLogprobs,
-        public readonly ?array $topLogprobs,
-        public readonly array $textOffset,
-    ) {
+    private function __construct(array $tokens, array $tokenLogprobs, $topLogprobs, array $textOffset)
+    {
+        $this->tokens = $tokens;
+        $this->tokenLogprobs = $tokenLogprobs;
+        $this->topLogprobs = $topLogprobs;
+        $this->textOffset = $textOffset;
     }
-
     /**
      * @param  array{tokens: array<int, string>, token_logprobs: array<int, float>, top_logprobs: array<int, string>|null, text_offset: array<int, int>}  $attributes
      */
     public static function from(array $attributes): self
     {
-        return new self(
-            $attributes['tokens'],
-            $attributes['token_logprobs'],
-            $attributes['top_logprobs'],
-            $attributes['text_offset'],
-        );
+        return new self($attributes['tokens'], $attributes['token_logprobs'], $attributes['top_logprobs'], $attributes['text_offset']);
     }
 
     /**

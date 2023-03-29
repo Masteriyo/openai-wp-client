@@ -16,31 +16,39 @@ final class EditResponse implements Response
      * @use ArrayAccessible<array{created: int, data: array<int, array{url?: string, b64_json?: string}>}>
      */
     use ArrayAccessible;
-
+    /**
+     * @readonly
+     * @var int
+     */
+    public $created;
+    /**
+     * @var array<int, EditResponseData>
+     * @readonly
+     */
+    public $data;
     /**
      * @param  array<int, EditResponseData>  $data
      */
-    private function __construct(
-        public readonly int $created,
-        public readonly array $data,
-    ) {
+    private function __construct(int $created, array $data)
+    {
+        $this->created = $created;
+        $this->data = $data;
     }
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{created: int, data: array<int, array{url?: string, b64_json?: string}>}  $attributes
+     * @param mixed[] $attributes
      */
-    public static function from(array $attributes): self
+    public static function from($attributes): self
     {
-        $results = array_map(fn (array $result): EditResponseData => EditResponseData::from(
-            $result
-        ), $attributes['data']);
+        $results = array_map(function (array $result) : EditResponseData {
+            return EditResponseData::from(
+                $result
+            );
+        }, $attributes['data']);
 
-        return new self(
-            $attributes['created'],
-            $results,
-        );
+        return new self($attributes['created'], $results);
     }
 
     /**
@@ -50,10 +58,9 @@ final class EditResponse implements Response
     {
         return [
             'created' => $this->created,
-            'data' => array_map(
-                static fn (EditResponseData $result): array => $result->toArray(),
-                $this->data,
-            ),
+            'data' => array_map(static function (EditResponseData $result) : array {
+                return $result->toArray();
+            }, $this->data),
         ];
     }
 }

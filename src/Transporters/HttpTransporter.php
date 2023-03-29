@@ -24,22 +24,48 @@ use Psr\Http\Message\ResponseInterface;
 final class HttpTransporter implements Transporter
 {
     /**
+     * @readonly
+     * @var \Psr\Http\Client\ClientInterface
+     */
+    private $client;
+    /**
+     * @readonly
+     * @var \OpenAI\ValueObjects\Transporter\BaseUri
+     */
+    private $baseUri;
+    /**
+     * @readonly
+     * @var \OpenAI\ValueObjects\Transporter\Headers
+     */
+    private $headers;
+    /**
+     * @readonly
+     * @var \OpenAI\ValueObjects\Transporter\QueryParams
+     */
+    private $queryParams;
+    /**
+     * @readonly
+     * @var \Closure
+     */
+    private $streamHandler;
+    /**
      * Creates a new Http Transporter instance.
      */
-    public function __construct(
-        private readonly ClientInterface $client,
-        private readonly BaseUri $baseUri,
-        private readonly Headers $headers,
-        private readonly QueryParams $queryParams,
-        private readonly Closure $streamHandler,
-    ) {
+    public function __construct(ClientInterface $client, BaseUri $baseUri, Headers $headers, QueryParams $queryParams, Closure $streamHandler)
+    {
+        $this->client = $client;
+        $this->baseUri = $baseUri;
+        $this->headers = $headers;
+        $this->queryParams = $queryParams;
+        $this->streamHandler = $streamHandler;
         // ..
     }
-
     /**
      * {@inheritDoc}
+     * @return mixed[]|string
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestObject(Payload $payload): array|string
+    public function requestObject($payload)
     {
         $request = $payload->toRequest($this->baseUri, $this->headers, $this->queryParams);
 
@@ -57,7 +83,7 @@ final class HttpTransporter implements Transporter
 
         try {
             /** @var array{error?: array{message: string, type: string, code: string}} $response */
-            $response = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+            $response = json_decode($contents, true, 512, 0);
         } catch (JsonException $jsonException) {
             throw new UnserializableResponse($jsonException);
         }
@@ -71,8 +97,9 @@ final class HttpTransporter implements Transporter
 
     /**
      * {@inheritDoc}
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestContent(Payload $payload): string
+    public function requestContent($payload): string
     {
         $request = $payload->toRequest($this->baseUri, $this->headers, $this->queryParams);
 
@@ -86,12 +113,12 @@ final class HttpTransporter implements Transporter
 
         try {
             /** @var array{error?: array{message: string, type: string, code: string}} $response */
-            $response = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+            $response = json_decode($contents, true, 512, 0);
 
             if (isset($response['error'])) {
                 throw new ErrorException($response['error']);
             }
-        } catch (JsonException) {
+        } catch (JsonException $exception) {
             // ..
         }
 
@@ -100,8 +127,9 @@ final class HttpTransporter implements Transporter
 
     /**
      * {@inheritDoc}
+     * @param \OpenAI\ValueObjects\Transporter\Payload $payload
      */
-    public function requestStream(Payload $payload): ResponseInterface
+    public function requestStream($payload): ResponseInterface
     {
         $request = $payload->toRequest($this->baseUri, $this->headers, $this->queryParams);
 

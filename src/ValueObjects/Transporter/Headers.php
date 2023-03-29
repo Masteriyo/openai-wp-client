@@ -13,12 +13,18 @@ use OpenAI\ValueObjects\ApiKey;
 final class Headers
 {
     /**
+     * @var array<string, string>
+     * @readonly
+     */
+    private $headers;
+    /**
      * Creates a new Headers value object.
      *
      * @param  array<string, string>  $headers
      */
-    private function __construct(private readonly array $headers)
+    private function __construct(array $headers)
     {
+        $this->headers = $headers;
         // ..
     }
 
@@ -45,10 +51,8 @@ final class Headers
      */
     public function withContentType(ContentType $contentType, string $suffix = ''): self
     {
-        return new self([
-            ...$this->headers,
-            'Content-Type' => $contentType->value.$suffix,
-        ]);
+        $item0Unpacked = $this->headers;
+        return new self(array_merge($item0Unpacked, ['Content-Type' => $contentType->value.$suffix]));
     }
 
     /**
@@ -56,10 +60,8 @@ final class Headers
      */
     public function withOrganization(string $organization): self
     {
-        return new self([
-            ...$this->headers,
-            'OpenAI-Organization' => $organization,
-        ]);
+        $item0Unpacked = $this->headers;
+        return new self(array_merge($item0Unpacked, ['OpenAI-Organization' => $organization]));
     }
 
     /**
@@ -67,10 +69,8 @@ final class Headers
      */
     public function withCustomHeader(string $name, string $value): self
     {
-        return new self([
-            ...$this->headers,
-            $name => $value,
-        ]);
+        $item0Unpacked = $this->headers;
+        return new self(array_merge($item0Unpacked, [$name => $value]));
     }
 
     /**

@@ -18,7 +18,7 @@ final class Edits
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function create(array $parameters): CreateResponse
+    public function create($parameters): CreateResponse
     {
         $payload = Payload::create('edits', $parameters);
 

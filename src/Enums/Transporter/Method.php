@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace OpenAI\Enums\Transporter;
 
-/**
- * @internal
- */
-enum Method: string
+class Method
 {
-    case GET = 'GET';
-    case POST = 'POST';
-    case PUT = 'PUT';
-    case DELETE = 'DELETE';
+    const GET = 'GET';
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const DELETE = 'DELETE';
 }

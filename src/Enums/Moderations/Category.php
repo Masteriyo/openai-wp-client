@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace OpenAI\Enums\Moderations;
 
-enum Category: string
+class Category
 {
-    case Hate = 'hate';
-    case HateThreatening = 'hate/threatening';
-    case SelfHarm = 'self-harm';
-    case Sexual = 'sexual';
-    case SexualMinors = 'sexual/minors';
-    case Violence = 'violence';
-    case ViolenceGraphic = 'violence/graphic';
+    const Hate = 'hate';
+    const HateThreatening = 'hate/threatening';
+    const SelfHarm = 'self-harm';
+    const Sexual = 'sexual';
+    const SexualMinors = 'sexual/minors';
+    const Violence = 'violence';
+    const ViolenceGraphic = 'violence/graphic';
 }

@@ -9,15 +9,24 @@ use OpenAI\Enums\Moderations\Category;
 final class CreateResponseResult
 {
     /**
+     * @var array<string, CreateResponseCategory>
+     * @readonly
+     */
+    public $categories;
+    /**
+     * @readonly
+     * @var bool
+     */
+    public $flagged;
+    /**
      * @param  array<string, CreateResponseCategory>  $categories
      */
-    private function __construct(
-        public readonly array $categories,
-        public readonly bool $flagged,
-    ) {
+    private function __construct(array $categories, bool $flagged)
+    {
+        $this->categories = $categories;
+        $this->flagged = $flagged;
         // ..
     }
-
     /**
      * @param  array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}  $attributes
      */

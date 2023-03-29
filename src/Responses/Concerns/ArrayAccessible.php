@@ -16,32 +16,40 @@ trait ArrayAccessible
 {
     /**
      * {@inheritDoc}
+     * @param mixed $offset
      */
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->toArray());
     }
 
     /**
      * {@inheritDoc}
+     * @param mixed $offset
+     * @return mixed
      */
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet($offset)
     {
         return $this->toArray()[$offset];
     }
 
     /**
      * {@inheritDoc}
+     * @return never
+     * @param mixed $offset
+     * @param mixed $value
      */
-    public function offsetSet(mixed $offset, mixed $value): never
+    public function offsetSet($offset, $value)
     {
         throw new BadMethodCallException('Cannot set response attributes.');
     }
 
     /**
      * {@inheritDoc}
+     * @return never
+     * @param mixed $offset
      */
-    public function offsetUnset(mixed $offset): never
+    public function offsetUnset($offset)
     {
         throw new BadMethodCallException('Cannot unset response attributes.');
     }

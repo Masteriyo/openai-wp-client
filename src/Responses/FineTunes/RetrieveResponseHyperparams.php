@@ -16,28 +16,46 @@ final class RetrieveResponseHyperparams implements Response
      * @use ArrayAccessible<array{batch_size: ?int, learning_rate_multiplier: ?float, n_epochs: int, prompt_loss_weight: float}>
      */
     use ArrayAccessible;
-
-    private function __construct(
-        public readonly ?int $batchSize,
-        public readonly ?float $learningRateMultiplier,
-        public readonly int $nEpochs,
-        public readonly float $promptLossWeight,
-    ) {
+    /**
+     * @readonly
+     * @var int|null
+     */
+    public $batchSize;
+    /**
+     * @readonly
+     * @var float|null
+     */
+    public $learningRateMultiplier;
+    /**
+     * @readonly
+     * @var int
+     */
+    public $nEpochs;
+    /**
+     * @readonly
+     * @var float
+     */
+    public $promptLossWeight;
+    /**
+     * @param int|null $batchSize
+     * @param float|null $learningRateMultiplier
+     */
+    private function __construct($batchSize, $learningRateMultiplier, int $nEpochs, float $promptLossWeight)
+    {
+        $this->batchSize = $batchSize;
+        $this->learningRateMultiplier = $learningRateMultiplier;
+        $this->nEpochs = $nEpochs;
+        $this->promptLossWeight = $promptLossWeight;
     }
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{batch_size: ?int, learning_rate_multiplier: ?float, n_epochs: int, prompt_loss_weight: float}  $attributes
+     * @param mixed[] $attributes
      */
-    public static function from(array $attributes): self
+    public static function from($attributes): self
     {
-        return new self(
-            $attributes['batch_size'],
-            $attributes['learning_rate_multiplier'],
-            $attributes['n_epochs'],
-            $attributes['prompt_loss_weight'],
-        );
+        return new self($attributes['batch_size'], $attributes['learning_rate_multiplier'], $attributes['n_epochs'], $attributes['prompt_loss_weight']);
     }
 
     /**

@@ -33,8 +33,9 @@ final class Files
      * Returns information about a specific file.
      *
      * @see https://beta.openai.com/docs/api-reference/files/retrieve
+     * @param string $file
      */
-    public function retrieve(string $file): RetrieveResponse
+    public function retrieve($file): RetrieveResponse
     {
         $payload = Payload::retrieve('files', $file);
 
@@ -48,8 +49,9 @@ final class Files
      * Returns the contents of the specified file.
      *
      * @see https://beta.openai.com/docs/api-reference/files/retrieve-content
+     * @param string $file
      */
-    public function download(string $file): string
+    public function download($file): string
     {
         $payload = Payload::retrieveContent('files', $file);
 
@@ -63,7 +65,7 @@ final class Files
      *
      * @param  array<string, mixed>  $parameters
      */
-    public function upload(array $parameters): CreateResponse
+    public function upload($parameters): CreateResponse
     {
         $payload = Payload::upload('files', $parameters);
 
@@ -77,8 +79,9 @@ final class Files
      * Delete a file.
      *
      * @see https://beta.openai.com/docs/api-reference/files/delete
+     * @param string $file
      */
-    public function delete(string $file): DeleteResponse
+    public function delete($file): DeleteResponse
     {
         $payload = Payload::delete('files', $file);
 

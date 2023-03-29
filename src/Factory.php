@@ -20,39 +20,46 @@ final class Factory
 {
     /**
      * The API key for the requests.
+     * @var string|null
      */
-    private ?string $apiKey = null;
+    private $apiKey;
 
     /**
      * The organization for the requests.
+     * @var string|null
      */
-    private ?string $organization = null;
+    private $organization;
 
     /**
      * The HTTP client for the requests.
+     * @var \Psr\Http\Client\ClientInterface|null
      */
-    private ?ClientInterface $httpClient = null;
+    private $httpClient;
 
     /**
      * The base URI for the requests.
+     * @var string|null
      */
-    private ?string $baseUri = null;
+    private $baseUri;
 
     /**
      * The HTTP headers for the requests.
      *
      * @var array<string, string>
      */
-    private array $headers = [];
+    private $headers = [];
 
     /**
      * The query parameters for the requests.
      *
      * @var array<string, string|int>
      */
-    private array $queryParams = [];
+    private $queryParams = [];
 
-    private ?Closure $streamHandler = null;
+    /**
+     * @var \Closure|null
+     */
+    private $streamHandler;
 
     /**
      * Sets the API key for the requests.
@@ -66,8 +73,9 @@ final class Factory
 
     /**
      * Sets the organization for the requests.
+     * @param string|null $organization
      */
-    public function withOrganization(?string $organization): self
+    public function withOrganization($organization): self
     {
         $this->organization = $organization;
 
@@ -152,7 +160,7 @@ final class Factory
             $queryParams = $queryParams->withParam($name, $value);
         }
 
-        $client = $this->httpClient ??= Psr18ClientDiscovery::find();
+        $client = $this->httpClient = $this->httpClient ?? Psr18ClientDiscovery::find();
 
         $sendAsync = $this->makeStreamHandler($client);
 
@@ -171,14 +179,18 @@ final class Factory
         }
 
         if ($client instanceof GuzzleClient) {
-            return fn (RequestInterface $request): ResponseInterface => $client->send($request, ['stream' => true]);
+            return function (RequestInterface $request) use ($client) : ResponseInterface {
+                return $client->send($request, ['stream' => true]);
+            };
         }
 
         if ($client instanceof Psr18Client) { // @phpstan-ignore-line
-            return fn (RequestInterface $request): ResponseInterface => $client->sendRequest($request); // @phpstan-ignore-line
+            return function (RequestInterface $request) use ($client) : ResponseInterface {
+                return $client->sendRequest($request);
+            }; // @phpstan-ignore-line
         }
 
-        return function (RequestInterface $_): never {
+        return function (RequestInterface $_) {
             throw new Exception('To use stream requests you must provide an stream handler closure via the OpenAI factory.');
         };
     }

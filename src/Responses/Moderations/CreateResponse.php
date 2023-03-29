@@ -16,33 +16,45 @@ final class CreateResponse implements Response
      * @use ArrayAccessible<array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}>}>
      */
     use ArrayAccessible;
-
+    /**
+     * @readonly
+     * @var string
+     */
+    public $id;
+    /**
+     * @readonly
+     * @var string
+     */
+    public $model;
+    /**
+     * @var array<int, CreateResponseResult>
+     * @readonly
+     */
+    public $results;
     /**
      * @param  array<int, CreateResponseResult>  $results
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $model,
-        public readonly array $results,
-    ) {
+    private function __construct(string $id, string $model, array $results)
+    {
+        $this->id = $id;
+        $this->model = $model;
+        $this->results = $results;
     }
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}>}  $attributes
+     * @param mixed[] $attributes
      */
-    public static function from(array $attributes): self
+    public static function from($attributes): self
     {
-        $results = array_map(fn (array $result): CreateResponseResult => CreateResponseResult::from(
-            $result
-        ), $attributes['results']);
+        $results = array_map(function (array $result) : CreateResponseResult {
+            return CreateResponseResult::from(
+                $result
+            );
+        }, $attributes['results']);
 
-        return new self(
-            $attributes['id'],
-            $attributes['model'],
-            $results,
-        );
+        return new self($attributes['id'], $attributes['model'], $results);
     }
 
     /**
@@ -53,10 +65,9 @@ final class CreateResponse implements Response
         return [
             'id' => $this->id,
             'model' => $this->model,
-            'results' => array_map(
-                static fn (CreateResponseResult $result): array => $result->toArray(),
-                $this->results,
-            ),
+            'results' => array_map(static function (CreateResponseResult $result) : array {
+                return $result->toArray();
+            }, $this->results),
         ];
     }
 }

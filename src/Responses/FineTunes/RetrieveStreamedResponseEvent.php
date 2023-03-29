@@ -16,28 +16,42 @@ final class RetrieveStreamedResponseEvent implements Response
      * @use ArrayAccessible<array{object: string, created_at: int, level: string, message: string}>
      */
     use ArrayAccessible;
-
-    private function __construct(
-        public readonly string $object,
-        public readonly int $createdAt,
-        public readonly string $level,
-        public readonly string $message,
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    public $object;
+    /**
+     * @readonly
+     * @var int
+     */
+    public $createdAt;
+    /**
+     * @readonly
+     * @var string
+     */
+    public $level;
+    /**
+     * @readonly
+     * @var string
+     */
+    public $message;
+    private function __construct(string $object, int $createdAt, string $level, string $message)
+    {
+        $this->object = $object;
+        $this->createdAt = $createdAt;
+        $this->level = $level;
+        $this->message = $message;
     }
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{object: string, created_at: int, level: string, message: string}  $attributes
+     * @param mixed[] $attributes
      */
-    public static function from(array $attributes): self
+    public static function from($attributes): self
     {
-        return new self(
-            $attributes['object'],
-            $attributes['created_at'],
-            $attributes['level'],
-            $attributes['message'],
-        );
+        return new self($attributes['object'], $attributes['created_at'], $attributes['level'], $attributes['message']);
     }
 
     /**

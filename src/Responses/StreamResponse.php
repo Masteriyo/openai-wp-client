@@ -15,17 +15,26 @@ use Psr\Http\Message\StreamInterface;
 final class StreamResponse implements IteratorAggregate
 {
     /**
+     * @var class-string<TResponse>
+     * @readonly
+     */
+    private $responseClass;
+    /**
+     * @readonly
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $response;
+    /**
      * Creates a new Stream Response instance.
      *
      * @param  class-string<TResponse>  $responseClass
      */
-    public function __construct(
-        private readonly string $responseClass,
-        private readonly ResponseInterface $response,
-    ) {
+    public function __construct(string $responseClass, ResponseInterface $response)
+    {
+        $this->responseClass = $responseClass;
+        $this->response = $response;
         //
     }
-
     /**
      * {@inheritDoc}
      */
@@ -34,7 +43,7 @@ final class StreamResponse implements IteratorAggregate
         while (! $this->response->getBody()->eof()) {
             $line = $this->readLine($this->response->getBody());
 
-            if (! str_starts_with($line, 'data:')) {
+            if (strncmp($line, 'data:', strlen('data:')) !== 0) {
                 continue;
             }
 
@@ -44,7 +53,7 @@ final class StreamResponse implements IteratorAggregate
                 break;
             }
 
-            $response = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+            $response = json_decode($data, true, 512, 0);
 
             yield $this->responseClass::from($response);
         }

@@ -32,8 +32,9 @@ final class Models
      * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
      *
      * @see https://beta.openai.com/docs/api-reference/models/retrieve
+     * @param string $model
      */
-    public function retrieve(string $model): RetrieveResponse
+    public function retrieve($model): RetrieveResponse
     {
         $payload = Payload::retrieve('models', $model);
 
@@ -47,8 +48,9 @@ final class Models
      * Delete a fine-tuned model. You must have the Owner role in your organization.
      *
      * @see https://beta.openai.com/docs/api-reference/fine-tunes/delete-model
+     * @param string $model
      */
-    public function delete(string $model): DeleteResponse
+    public function delete($model): DeleteResponse
     {
         $payload = Payload::delete('models', $model);
 

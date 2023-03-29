@@ -8,8 +8,9 @@ trait Streamable
 {
     /**
      * @param  array<string, mixed>  $parameters
+     * @return void
      */
-    private function ensureNotStreamed(array $parameters): void
+    private function ensureNotStreamed(array $parameters)
     {
         if (! isset($parameters['stream'])) {
             return;

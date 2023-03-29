@@ -8,22 +8,32 @@ use OpenAI\Enums\Moderations\Category;
 
 final class CreateResponseCategory
 {
-    private function __construct(
-        public readonly Category $category,
-        public readonly bool $violated,
-        public readonly float $score,
-    ) {
+    /**
+     * @readonly
+     * @var \OpenAI\Enums\Moderations\Category
+     */
+    public $category;
+    /**
+     * @readonly
+     * @var bool
+     */
+    public $violated;
+    /**
+     * @readonly
+     * @var float
+     */
+    public $score;
+    private function __construct(Category $category, bool $violated, float $score)
+    {
+        $this->category = $category;
+        $this->violated = $violated;
+        $this->score = $score;
     }
-
     /**
      * @param  array{category: string, violated: bool, score: float}  $attributes
      */
     public static function from(array $attributes): self
     {
-        return new self(
-            Category::from($attributes['category']),
-            $attributes['violated'],
-            $attributes['score'],
-        );
+        return new self(Category::from($attributes['category']), $attributes['violated'], $attributes['score']);
     }
 }

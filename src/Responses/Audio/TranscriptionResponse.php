@@ -16,17 +16,44 @@ final class TranscriptionResponse implements Response
      * @use ArrayAccessible<array{task: ?string, language: ?string, duration: ?float, segments: array<int, array{id: int, seek: int, start: float, end: float, text: string, tokens: array<int, int>, temperature: float, avg_logprob: float, compression_ratio: float, no_speech_prob: float, transient: bool}>, text: string}>
      */
     use ArrayAccessible;
-
+    /**
+     * @readonly
+     * @var string|null
+     */
+    public $task;
+    /**
+     * @readonly
+     * @var string|null
+     */
+    public $language;
+    /**
+     * @readonly
+     * @var float|null
+     */
+    public $duration;
+    /**
+     * @var array<int, TranscriptionResponseSegment>
+     * @readonly
+     */
+    public $segments;
+    /**
+     * @readonly
+     * @var string
+     */
+    public $text;
     /**
      * @param  array<int, TranscriptionResponseSegment>  $segments
+     * @param string|null $task
+     * @param string|null $language
+     * @param float|null $duration
      */
-    private function __construct(
-        public readonly ?string $task,
-        public readonly ?string $language,
-        public readonly ?float $duration,
-        public readonly array $segments,
-        public readonly string $text,
-    ) {
+    private function __construct($task, $language, $duration, array $segments, string $text)
+    {
+        $this->task = $task;
+        $this->language = $language;
+        $this->duration = $duration;
+        $this->segments = $segments;
+        $this->text = $text;
     }
 
     /**
@@ -34,23 +61,19 @@ final class TranscriptionResponse implements Response
      *
      * @param  array{task: ?string, language: ?string, duration: ?float, segments: array<int, array{id: int, seek: int, start: float, end: float, text: string, tokens: array<int, int>, temperature: float, avg_logprob: float, compression_ratio: float, no_speech_prob: float, transient: bool}>, text: string}|string  $attributes
      */
-    public static function from(array|string $attributes): self
+    public static function from($attributes): self
     {
         if (is_string($attributes)) {
             $attributes = ['text' => $attributes];
         }
 
-        $segments = isset($attributes['segments']) ? array_map(fn (array $result): TranscriptionResponseSegment => TranscriptionResponseSegment::from(
-            $result
-        ), $attributes['segments']) : [];
+        $segments = isset($attributes['segments']) ? array_map(function (array $result) : TranscriptionResponseSegment {
+            return TranscriptionResponseSegment::from(
+                $result
+            );
+        }, $attributes['segments']) : [];
 
-        return new self(
-            $attributes['task'] ?? null,
-            $attributes['language'] ?? null,
-            $attributes['duration'] ?? null,
-            $segments,
-            $attributes['text'],
-        );
+        return new self($attributes['task'] ?? null, $attributes['language'] ?? null, $attributes['duration'] ?? null, $segments, $attributes['text']);
     }
 
     /**
@@ -62,10 +85,9 @@ final class TranscriptionResponse implements Response
             'task' => $this->task,
             'language' => $this->language,
             'duration' => $this->duration,
-            'segments' => array_map(
-                static fn (TranscriptionResponseSegment $result): array => $result->toArray(),
-                $this->segments,
-            ),
+            'segments' => array_map(static function (TranscriptionResponseSegment $result) : array {
+                return $result->toArray();
+            }, $this->segments),
             'text' => $this->text,
         ];
     }

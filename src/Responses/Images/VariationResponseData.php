@@ -16,24 +16,30 @@ final class VariationResponseData implements Response
      * @use ArrayAccessible<array{url: string}|array{b64_json: string}>
      */
     use ArrayAccessible;
-
-    private function __construct(
-        public readonly string $url = '',
-        public readonly string $b64_json = '',
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    public $url = '';
+    /**
+     * @readonly
+     * @var string
+     */
+    public $b64_json = '';
+    private function __construct(string $url = '', string $b64_json = '')
+    {
+        $this->url = $url;
+        $this->b64_json = $b64_json;
     }
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{url?: string, b64_json?: string}  $attributes
+     * @param mixed[] $attributes
      */
-    public static function from(array $attributes): self
+    public static function from($attributes): self
     {
-        return new self(
-            $attributes['url'] ?? '',
-            $attributes['b64_json'] ?? '',
-        );
+        return new self($attributes['url'] ?? '', $attributes['b64_json'] ?? '');
     }
 
     /**
