@@ -16,7 +16,7 @@
 
 ## Get Started
 
-> **Requires [PHP 8.1+](https://php.net/releases/)**
+> **Requires [PHP 7.0+](https://php.net/releases/)**
 
 First, install OpenAI via the [Composer](https://getcomposer.org/) package manager:
 
@@ -98,18 +98,18 @@ $response->root; // 'text-davinci-003'
 $response->parent; // null
 
 foreach ($response->permission as $result) {
-    $result->id; // 'modelperm-7E53j9OtnMZggjqlwMxW4QG7' 
-    $result->object; // 'model_permission' 
-    $result->created; // 1664307523 
-    $result->allowCreateEngine; // false 
-    $result->allowSampling; // true 
-    $result->allowLogprobs; // true 
-    $result->allowSearchIndices; // false 
-    $result->allowView; // true 
-    $result->allowFineTuning; // false 
-    $result->organization; // '*' 
-    $result->group; // null 
-    $result->isBlocking; // false 
+    $result->id; // 'modelperm-7E53j9OtnMZggjqlwMxW4QG7'
+    $result->object; // 'model_permission'
+    $result->created; // 1664307523
+    $result->allowCreateEngine; // false
+    $result->allowSampling; // true
+    $result->allowLogprobs; // true
+    $result->allowSearchIndices; // false
+    $result->allowView; // true
+    $result->allowFineTuning; // false
+    $result->organization; // '*'
+    $result->group; // null
+    $result->isBlocking; // false
 }
 
 $response->toArray(); // ['id' => 'text-davinci-003', ...]
@@ -509,15 +509,15 @@ $response->trainingFiles; // [
 $response->updatedAt; // 1614807865
 
 foreach ($response->events as $result) {
-    $result->object; // 'fine-tune-event' 
+    $result->object; // 'fine-tune-event'
     $result->createdAt; // 1614807352
     $result->level; // 'info'
     $result->message; // 'Job enqueued. Waiting for jobs ahead to complete. Queue number =>  0.'
 }
 
-$response->hyperparams->batchSize; // 4 
-$response->hyperparams->learningRateMultiplier; // 0.1 
-$response->hyperparams->nEpochs; // 4 
+$response->hyperparams->batchSize; // 4
+$response->hyperparams->learningRateMultiplier; // 0.1
+$response->hyperparams->nEpochs; // 4
 $response->hyperparams->promptLossWeight; // 0.1
 
 foreach ($response->resultFiles as $result) {
@@ -570,7 +570,7 @@ $response = $client->fineTunes()->listEvents('ft-AF1WoRqd3aJAHsqc9NY7iL8F');
 $response->object; // 'list'
 
 foreach ($response->data as $result) {
-    $result->object; // 'fine-tune-event' 
+    $result->object; // 'fine-tune-event'
     $result->createdAt; // 1614807352
     // ...
 }
