@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenAI;
 
+
 use OpenAI\Contracts\Transporter;
 use OpenAI\Resources\Audio;
 use OpenAI\Resources\Chat;
@@ -20,7 +21,7 @@ final class Client
 {
     /**
      * @readonly
-     * @var \OpenAI\Contracts\Transporter
+     * @var      \OpenAI\Contracts\Transporter
      */
     private $transporter;
     /**
