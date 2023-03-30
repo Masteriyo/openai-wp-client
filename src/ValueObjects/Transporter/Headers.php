@@ -49,10 +49,10 @@ final class Headers
     /**
      * Creates a new Headers value object, with the given content type, and the existing headers.
      */
-    public function withContentType(ContentType $contentType, string $suffix = ''): self
+    public function withContentType(string $contentType, string $suffix = ''): self
     {
         $item0Unpacked = $this->headers;
-        return new self(array_merge($item0Unpacked, ['Content-Type' => $contentType->value.$suffix]));
+        return new self(array_merge($item0Unpacked, ['Content-Type' => $contentType.$suffix]));
     }
 
     /**

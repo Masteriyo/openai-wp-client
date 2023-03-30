@@ -9,17 +9,17 @@ use OpenAI\Enums\Moderations\Category;
 final class CreateResponseResult
 {
     /**
-     * @var array<string, CreateResponseCategory>
+     * @var      array<string, CreateResponseCategory>
      * @readonly
      */
     public $categories;
     /**
      * @readonly
-     * @var bool
+     * @var      bool
      */
     public $flagged;
     /**
-     * @param  array<string, CreateResponseCategory>  $categories
+     * @param array<string, CreateResponseCategory> $categories
      */
     private function __construct(array $categories, bool $flagged)
     {
@@ -28,19 +28,23 @@ final class CreateResponseResult
         // ..
     }
     /**
-     * @param  array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}  $attributes
+     * @param array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool} $attributes
      */
     public static function from(array $attributes): self
     {
-        /** @var array<string, CreateResponseCategory> $categories */
+        /**
+ * @var array<string, CreateResponseCategory> $categories 
+*/
         $categories = [];
 
         foreach (Category::cases() as $category) {
-            $categories[$category->value] = CreateResponseCategory::from([
+            $categories[$category->value] = CreateResponseCategory::from(
+                [
                 'category' => $category->value,
                 'violated' => $attributes['categories'][$category->value],
                 'score' => $attributes['category_scores'][$category->value],
-            ]);
+                ]
+            );
         }
 
         return new CreateResponseResult(
@@ -57,8 +61,8 @@ final class CreateResponseResult
         $categories = [];
         $categoryScores = [];
         foreach ($this->categories as $category) {
-            $categories[$category->category->value] = $category->violated;
-            $categoryScores[$category->category->value] = $category->score;
+            $categories[$category->category] = $category->violated;
+            $categoryScores[$category->category] = $category->score;
         }
 
         return [

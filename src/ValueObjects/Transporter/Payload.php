@@ -43,7 +43,7 @@ final class Payload
      *
      * @param  array<string, mixed>  $parameters
      */
-    private function __construct(ContentType $contentType, Method $method, ResourceUri $uri, array $parameters = [])
+    private function __construct(string $contentType, string $method, ResourceUri $uri, array $parameters = [])
     {
         $this->contentType = $contentType;
         $this->method = $method;
@@ -178,7 +178,7 @@ final class Payload
             }
         }
 
-        $request = $psr17Factory->createRequest($this->method->value, $uri);
+        $request = $psr17Factory->createRequest($this->method, $uri);
 
         if ($body !== null) {
             $request = $request->withBody($body);
